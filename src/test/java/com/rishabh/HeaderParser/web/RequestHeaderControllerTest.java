@@ -9,11 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -46,6 +44,13 @@ public class RequestHeaderControllerTest {
                 .andExpect(jsonPath("ipAddress").value("216.175.30.50"))
                 .andDo(print());
 
+    }
+
+    @Test
+    public void testRequestHeaderExceptionController() throws Exception{
+        when(requestHeaderService.getRequestHeader(any())).thenReturn(null);
+        mockMvc.perform(get("get/userRequestHeader"))
+                .andExpect(status().isNotFound());
     }
 
     private UserRequestHeader setUserRequestHeader(){
